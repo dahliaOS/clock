@@ -9,7 +9,12 @@
 ![GitHub issues](https://img.shields.io/github/issues/dahlia-os/clock?color=brightgreen)
 ![GitHub](https://img.shields.io/github/license/dahlia-os/clock?color=brightgreen)
 
- - **Alarms, timers, and stopwatches for dahliaOS**
+ - **Alarms** to help you get to work on time
+ - **Timer** so that you don't burn your food
+ - **Stopwatch** for keeping track of your runners
+ - **Clock** to coordinate events
+ - **Improved** design
+ - **dahliaOS**'s speed and simplicity
 
 ## Contribute
 
