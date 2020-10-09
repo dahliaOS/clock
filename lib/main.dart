@@ -18,6 +18,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:roots_clock/utils/localization/localization.dart';
 
 void main() {
   runApp(new Clock());
@@ -39,7 +40,6 @@ class Clock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return new MaterialApp(
       title: 'Clock',
       theme: new ThemeData(
@@ -47,7 +47,11 @@ class Clock extends StatelessWidget {
         primaryColor: Colors.blue[900],
         brightness: Brightness.dark //TODO: make the tabs light-mode compatible
       ),
-      home: ClockApp()
+      home: ClockApp(),
+      localizationsDelegates: [
+        Localization.delegate,
+      ],
+      locale: Locale(String.fromEnvironment("locale")),
     );
   }
 }
