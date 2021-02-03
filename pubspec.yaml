@@ -14,8 +14,9 @@ license_statement: |
   See the License for the specific language governing permissions and
   limitations under the License.
 
-name: roots_clock
+name: dahlia_clock
 description: dahliaOS built-in clock app
+version: 0.0.1+1
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -31,7 +32,6 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

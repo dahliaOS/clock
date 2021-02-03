@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The dahliaOS Authors
+Copyright 2019 The dahliaOS Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:roots_clock/utils/localization/localization.dart';
 
 void main() {
   runApp(new Clock());
@@ -41,18 +40,12 @@ class Clock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Clock',
-      theme: new ThemeData(
-        platform: TargetPlatform.fuchsia,
-        primaryColor: Colors.blue[900],
-        brightness: Brightness.dark //TODO: make the tabs light-mode compatible
-      ),
-      home: ClockApp(),
-      localizationsDelegates: [
-        Localization.delegate,
-      ],
-      locale: Locale(String.fromEnvironment("locale")),
-    );
+        title: 'Clock',
+        theme: new ThemeData(
+            platform: TargetPlatform.fuchsia,
+            primaryColor: Colors.blue[900],
+            brightness: Brightness.dark),
+        home: ClockApp());
   }
 }
 
@@ -66,17 +59,17 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController tcon = TabController(length: 2, vsync: this);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        toolbarHeight: 75,
-        title: Row(
-          children: [
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          toolbarHeight: 75,
+          title: Row(children: [
             TabBar(
               controller: tcon,
               indicator: BoxDecoration(
                 color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
               ),
               isScrollable: true,
               tabs: [
@@ -94,30 +87,38 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
             PopupMenuButton(
               icon: Icon(Icons.more_vert),
               itemBuilder: (context) => <PopupMenuEntry>[
-                PopupMenuItem(
-                  child: Text("Settings"),
-                  value: "settings"
-                )
+                PopupMenuItem(child: Text("Settings"), value: "settings")
               ],
               onSelected: (value) {
-                if (value == "settings") showDialog(
-                  context: context,
-                  useRootNavigator: false,
-                  child: Icon(Icons.warning_outlined, color: Colors.amber)
-                );
+                if (value == "settings")
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      // return object of type Dialog
+                      return AlertDialog(
+                        title: new Text("Error"),
+                        content: new Text("ERROR FEATURE NOT IMPLEMENTED"),
+                        actions: <Widget>[
+                          // usually buttons at the bottom of the dialog
+                          new FlatButton(
+                            child: new Text("OK"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                ;
               },
             ),
-          ]
+          ]),
         ),
-      ),
-      body: TabBarView(
-        controller: tcon,
-        children: [
-          WorldClockTab(),
-          AlarmsTab()
-        ],
-      )
-    );
+        body: TabBarView(
+          controller: tcon,
+          children: [WorldClockTab(), AlarmsTab()],
+        ));
   }
 }
 
@@ -127,26 +128,22 @@ class WorldClockTab extends StatefulWidget {
 }
 
 class _WorldClockTabState extends State<WorldClockTab> {
-
   DateTime _datetime = DateTime.now();
   Timer _ctimer;
 
   @override
   Widget build(BuildContext context) {
-    if (_ctimer == null) _ctimer = Timer.periodic(Duration(seconds: 1), (me) {
-      _datetime = DateTime.now();
-      setState(() {});
-    });
+    if (_ctimer == null)
+      _ctimer = Timer.periodic(Duration(seconds: 1), (me) {
+        _datetime = DateTime.now();
+        setState(() {});
+      });
     return Material(
       child: Center(
-        child: Text(
-          "${_datetime.hour}:${_datetime.minute < 10 ? "0"+_datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0"+_datetime.second.toString() : _datetime.second}",
-          style: TextStyle(
-            fontSize: 48,
-            fontWeight: FontWeight.bold
-          ),
-        )
-      ),
+          child: Text(
+        "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}",
+        style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+      )),
     );
   }
 }
@@ -155,9 +152,7 @@ class AlarmsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Center(
-        child: Icon(Icons.timer_rounded)
-      ),
+      child: Center(child: Icon(Icons.timer_rounded)),
     );
   }
 }
