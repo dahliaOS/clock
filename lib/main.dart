@@ -129,7 +129,7 @@ class WorldClockTab extends StatefulWidget {
 
 class _WorldClockTabState extends State<WorldClockTab> {
   DateTime _datetime = DateTime.now();
-  Timer _ctimer;
+  Timer? _ctimer;
 
   @override
   Widget build(BuildContext context) {
