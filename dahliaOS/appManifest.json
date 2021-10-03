@@ -1,0 +1,10 @@
+{
+      "id": "io.dahliaos.clock",
+      "altName": "clock",
+      "realName": "Clock",
+      "version": "dahliaOS-latest",
+      "description": "Clock for dahliaOS",
+      "sourceCode": "https://github.com/dahliaOS/clock",
+      "hash": "DAP_AUTOMATION_PKGHASH",
+      "architecture": "x86_64"
+},
