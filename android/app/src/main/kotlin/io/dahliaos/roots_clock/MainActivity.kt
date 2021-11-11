@@ -1,4 +1,4 @@
-package io.dahliaos.roots_clock
+package io.dahliaos.clock
 
 import io.flutter.embedding.android.FlutterActivity
 

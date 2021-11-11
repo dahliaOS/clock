@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "roots_clock")
-set(APPLICATION_ID "io.dahliaos.roots_clock")
+set(BINARY_NAME "clock")
+set(APPLICATION_ID "io.dahliaos.clock")
 
 cmake_policy(SET CMP0063 NEW)
 
