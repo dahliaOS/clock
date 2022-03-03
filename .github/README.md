@@ -31,12 +31,12 @@ If you're wondering how to contribute to the project, please refer to [CONTRIBUT
 
 ## License
 
-<p align="center">
+<p align="left">
   <img width="45%" src="https://raw.githubusercontent.com/dahliaOS/brand/master/dahliaOS/svg/logotypewhitetext.svg#gh-dark-mode-only"
   
 </p>
   
-<p align="center">
+<p align="left">
   <img width="45%" src="https://github.com/dahliaOS/brand/blob/master/dahliaOS/svg/logotypeblacktext.svg#gh-light-mode-only"
   
 </p>
