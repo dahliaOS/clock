@@ -19,6 +19,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import './timer/tab.dart';
+import './keyboard.dart';
+
 void main() {
   runApp(new Clock());
 }
@@ -57,68 +60,84 @@ class ClockApp extends StatefulWidget {
 class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    TabController tcon = TabController(length: 2, vsync: this);
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          toolbarHeight: 75,
-          title: Row(children: [
-            TabBar(
-              controller: tcon,
-              indicator: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-              ),
-              isScrollable: true,
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.access_time),
-                  text: "Clock",
+    final TabController tcon = TabController(length: 3, vsync: this);
+
+    final KeyboardEvents keyboardEvents = KeyboardEvents();
+
+    return new RawKeyboardListener(
+        focusNode: FocusNode(skipTraversal: true),
+        autofocus: true,
+        onKey: keyboardEvents.onKey,
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              toolbarHeight: 75,
+              title: Row(children: [
+                TabBar(
+                  controller: tcon,
+                  indicator: BoxDecoration(
+                    color: Theme.of(context).canvasColor,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8)),
+                  ),
+                  isScrollable: true,
+                  tabs: [
+                    Tab(
+                      icon: Icon(Icons.access_time),
+                      text: "Clock",
+                    ),
+                    Tab(
+                      icon: Icon(Icons.alarm),
+                      text: "Alarms",
+                    ),
+                    Tab(
+                      icon: Icon(Icons.hourglass_empty),
+                      text: "Timer",
+                    )
+                  ],
                 ),
-                Tab(
-                  icon: Icon(Icons.alarm),
-                  text: "Alarms",
-                ),
-              ],
-            ),
-            Expanded(child: Container()),
-            PopupMenuButton(
-              icon: Icon(Icons.more_vert),
-              itemBuilder: (context) => <PopupMenuEntry>[
-                PopupMenuItem(child: Text("Settings"), value: "settings")
-              ],
-              onSelected: (value) {
-                if (value == "settings")
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      // return object of type Dialog
-                      return AlertDialog(
-                        title: new Text("Error"),
-                        content: new Text("ERROR FEATURE NOT IMPLEMENTED"),
-                        actions: <Widget>[
-                          // usually buttons at the bottom of the dialog
-                          new FlatButton(
-                            child: new Text("OK"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
+                Expanded(child: Container()),
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  itemBuilder: (context) => <PopupMenuEntry>[
+                    PopupMenuItem(child: Text("Settings"), value: "settings")
+                  ],
+                  onSelected: (value) {
+                    if (value == "settings")
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          // return object of type Dialog
+                          return AlertDialog(
+                            title: new Text("Error"),
+                            content: new Text("ERROR FEATURE NOT IMPLEMENTED"),
+                            actions: <Widget>[
+                              // usually buttons at the bottom of the dialog
+                              new FlatButton(
+                                child: new Text("OK"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       );
-                    },
-                  );
-                ;
-              },
+                    ;
+                  },
+                ),
+              ]),
             ),
-          ]),
-        ),
-        body: TabBarView(
-          controller: tcon,
-          children: [WorldClockTab(), AlarmsTab()],
-        ));
+            body: TabBarView(
+              controller: tcon,
+              children: [
+                WorldClockTab(),
+                AlarmsTab(),
+                TimerTab(keyboardEvents: keyboardEvents)
+              ],
+            )));
   }
 }
 
@@ -130,6 +149,12 @@ class WorldClockTab extends StatefulWidget {
 class _WorldClockTabState extends State<WorldClockTab> {
   DateTime _datetime = DateTime.now();
   Timer? _ctimer;
+
+  @override
+  void deactivate() {
+    _ctimer?.cancel();
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
