@@ -14,15 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import './timer/tab.dart';
 import './keyboard.dart';
+import './worldClock/tab.dart';
+import './worldClock/timezones.dart';
+import './state.dart';
 
 void main() {
+  setupTimezoneInfo();
+  appState = AppState.tryFromDisk();
   runApp(new Clock());
 }
 
@@ -138,38 +140,6 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
                 TimerTab(keyboardEvents: keyboardEvents)
               ],
             )));
-  }
-}
-
-class WorldClockTab extends StatefulWidget {
-  @override
-  _WorldClockTabState createState() => _WorldClockTabState();
-}
-
-class _WorldClockTabState extends State<WorldClockTab> {
-  DateTime _datetime = DateTime.now();
-  Timer? _ctimer;
-
-  @override
-  void deactivate() {
-    _ctimer?.cancel();
-    super.deactivate();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_ctimer == null)
-      _ctimer = Timer.periodic(Duration(seconds: 1), (me) {
-        _datetime = DateTime.now();
-        setState(() {});
-      });
-    return Material(
-      child: Center(
-          child: Text(
-        "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}",
-        style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-      )),
-    );
   }
 }
 
