@@ -278,7 +278,7 @@ class _Actions extends StatelessWidget {
         ),
         onPressed: onDelete,
         child: Icon(
-          Icons.delete_outline,
+          Icons.stop,
           size: 30,
         ),
       ),
