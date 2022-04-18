@@ -15,7 +15,9 @@ limitations under the License.
 */
 
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:ui';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 
@@ -148,6 +150,8 @@ class WorldClockTab extends StatefulWidget {
 
 class _WorldClockTabState extends State<WorldClockTab> {
   DateTime _datetime = DateTime.now();
+  String _dateTimeString = "";
+  bool is24 = true;
   Timer? _ctimer;
 
   @override
@@ -158,17 +162,39 @@ class _WorldClockTabState extends State<WorldClockTab> {
 
   @override
   Widget build(BuildContext context) {
+    if (!is24)
+      _dateTimeString = DateFormat('hh:mm a').format(DateTime.now()).toString();
+    else
+      _dateTimeString =
+          "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}";
+
     if (_ctimer == null)
       _ctimer = Timer.periodic(Duration(seconds: 1), (me) {
-        _datetime = DateTime.now();
         setState(() {});
       });
     return Material(
-      child: Center(
-          child: Text(
-        "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}",
-        style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-      )),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          this._dateTimeString,
+          style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          DateFormat.yMMMMd('en_US').format(DateTime.now()),
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("24-hour format"),
+            Switch(
+                value: is24,
+                onChanged: (bool value) {
+                  this._dateTimeString = DateTime.now().toString();
+                  is24 = !is24;
+                }),
+          ],
+        ),
+      ]),
     );
   }
 }
