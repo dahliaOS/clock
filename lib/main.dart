@@ -15,15 +15,14 @@ limitations under the License.
 */
 
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import './timer/tab.dart';
 import './keyboard.dart';
+import './timer/tab.dart';
 
 void main() {
-  runApp(new Clock());
+  runApp(Clock());
 }
 
 class Clock extends StatelessWidget {
@@ -42,9 +41,9 @@ class Clock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
         title: 'Clock',
-        theme: new ThemeData(
+        theme: ThemeData(
             platform: TargetPlatform.fuchsia,
             primaryColor: Colors.blue[900],
             brightness: Brightness.dark),
@@ -64,7 +63,7 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
 
     final KeyboardEvents keyboardEvents = KeyboardEvents();
 
-    return new RawKeyboardListener(
+    return RawKeyboardListener(
         focusNode: FocusNode(skipTraversal: true),
         autofocus: true,
         onKey: keyboardEvents.onKey,
@@ -111,12 +110,12 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
                         builder: (BuildContext context) {
                           // return object of type Dialog
                           return AlertDialog(
-                            title: new Text("Error"),
-                            content: new Text("ERROR FEATURE NOT IMPLEMENTED"),
+                            title: Text("Error"),
+                            content: Text("ERROR FEATURE NOT IMPLEMENTED"),
                             actions: <Widget>[
                               // usually buttons at the bottom of the dialog
-                              new FlatButton(
-                                child: new Text("OK"),
+                              TextButton(
+                                child: Text("OK"),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
