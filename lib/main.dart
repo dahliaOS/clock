@@ -113,32 +113,37 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Settings"),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SwitchListTile(
-                                  title: Text("24-hour format"),
-                                  subtitle: Text("This setting is not persisted yet."),
-                                  value: use24HourFormat,
-                                  onChanged: (bool value) {
-                                    //this._dateTimeString = DateTime.now().toString();
-                                    setState(() {
-                                      use24HourFormat = !use24HourFormat;
-                                    });
-                                  }
+                          return StatefulBuilder(
+                            builder: (context, setState2) {
+                              return AlertDialog(
+                                title: Text("Settings"),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SwitchListTile(
+                                      title: Text("24-hour format"),
+                                      subtitle: Text("At this time, settings will be cleared when the app is closed."),
+                                      value: use24HourFormat,
+                                      onChanged: (bool newValue) {
+                                        //this._dateTimeString = DateTime.now().toString();
+                                        setState(() {
+                                          use24HourFormat = newValue;
+                                        });
+                                        setState2(() {});
+                                      }
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            actions: [
-                              TextButton(
-                                child: Text("OK"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
+                                actions: [
+                                  TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            }
                           );
                         },
                       );
@@ -167,7 +172,7 @@ class WorldClockTab extends StatefulWidget {
 }
 
 class _WorldClockTabState extends State<WorldClockTab> {
-  DateTime _datetime = DateTime.now();
+  //DateTime _datetime = DateTime.now();
   String _dateTimeString = "";
   Timer? _ctimer;
 
@@ -180,10 +185,11 @@ class _WorldClockTabState extends State<WorldClockTab> {
   @override
   Widget build(BuildContext context) {
     if (!widget.use24HourFormat)
-      _dateTimeString = DateFormat('hh:mm a').format(DateTime.now()).toString();
+      _dateTimeString = DateFormat.jms().format(DateTime.now()).toString();
     else
-      _dateTimeString =
-          "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}";
+      _dateTimeString = DateFormat.Hms().format(DateTime.now()).toString();
+      // _dateTimeString =
+      //     "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}";
 
     if (_ctimer == null)
       _ctimer = Timer.periodic(Duration(seconds: 1), (me) {
