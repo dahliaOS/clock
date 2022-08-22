@@ -60,13 +60,15 @@ class ClockApp extends StatefulWidget {
 }
 
 class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
+  bool use24HourFormat = false;
+
   @override
   Widget build(BuildContext context) {
     final TabController tcon = TabController(length: 3, vsync: this);
 
     final KeyboardEvents keyboardEvents = KeyboardEvents();
 
-    return new RawKeyboardListener(
+    return RawKeyboardListener(
         focusNode: FocusNode(skipTraversal: true),
         autofocus: true,
         onKey: keyboardEvents.onKey,
@@ -111,14 +113,27 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          // return object of type Dialog
                           return AlertDialog(
-                            title: new Text("Error"),
-                            content: new Text("ERROR FEATURE NOT IMPLEMENTED"),
-                            actions: <Widget>[
-                              // usually buttons at the bottom of the dialog
-                              new FlatButton(
-                                child: new Text("OK"),
+                            title: Text("Settings"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SwitchListTile(
+                                  title: Text("24-hour format"),
+                                  subtitle: Text("This setting is not persisted yet."),
+                                  value: use24HourFormat,
+                                  onChanged: (bool value) {
+                                    //this._dateTimeString = DateTime.now().toString();
+                                    setState(() {
+                                      use24HourFormat = !use24HourFormat;
+                                    });
+                                  }
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text("OK"),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -135,7 +150,7 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
             body: TabBarView(
               controller: tcon,
               children: [
-                WorldClockTab(),
+                WorldClockTab(use24HourFormat: use24HourFormat),
                 AlarmsTab(),
                 TimerTab(keyboardEvents: keyboardEvents)
               ],
@@ -144,6 +159,9 @@ class _ClockApp extends State<ClockApp> with TickerProviderStateMixin {
 }
 
 class WorldClockTab extends StatefulWidget {
+  final bool use24HourFormat;
+  WorldClockTab({Key? key, this.use24HourFormat = false}) : super(key: key);
+
   @override
   _WorldClockTabState createState() => _WorldClockTabState();
 }
@@ -151,7 +169,6 @@ class WorldClockTab extends StatefulWidget {
 class _WorldClockTabState extends State<WorldClockTab> {
   DateTime _datetime = DateTime.now();
   String _dateTimeString = "";
-  bool is24 = true;
   Timer? _ctimer;
 
   @override
@@ -162,7 +179,7 @@ class _WorldClockTabState extends State<WorldClockTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (!is24)
+    if (!widget.use24HourFormat)
       _dateTimeString = DateFormat('hh:mm a').format(DateTime.now()).toString();
     else
       _dateTimeString =
@@ -181,18 +198,6 @@ class _WorldClockTabState extends State<WorldClockTab> {
         Text(
           DateFormat.yMMMMd('en_US').format(DateTime.now()),
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("24-hour format"),
-            Switch(
-                value: is24,
-                onChanged: (bool value) {
-                  this._dateTimeString = DateTime.now().toString();
-                  is24 = !is24;
-                }),
-          ],
         ),
       ]),
     );
