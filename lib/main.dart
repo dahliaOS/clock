@@ -15,17 +15,15 @@ limitations under the License.
 */
 
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:ui';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 
-import './timer/tab.dart';
 import './keyboard.dart';
+import './timer/tab.dart';
 
 void main() {
-  runApp(new Clock());
+  runApp(Clock());
 }
 
 class Clock extends StatelessWidget {
@@ -44,9 +42,9 @@ class Clock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
         title: 'Clock',
-        theme: new ThemeData(
+        theme: ThemeData(
             platform: TargetPlatform.fuchsia,
             primaryColor: Colors.blue[900],
             brightness: Brightness.dark),
@@ -185,9 +183,9 @@ class _WorldClockTabState extends State<WorldClockTab> {
   @override
   Widget build(BuildContext context) {
     if (!widget.use24HourFormat)
-      _dateTimeString = DateFormat.jms().format(DateTime.now()).toString();
+      _dateTimeString = DateFormat.jms().format(DateTime.now());
     else
-      _dateTimeString = DateFormat.Hms().format(DateTime.now()).toString();
+      _dateTimeString = DateFormat.Hms().format(DateTime.now());
       // _dateTimeString =
       //     "${_datetime.hour}:${_datetime.minute < 10 ? "0" + _datetime.minute.toString() : _datetime.minute}:${_datetime.second < 10 ? "0" + _datetime.second.toString() : _datetime.second}";
 
@@ -202,7 +200,7 @@ class _WorldClockTabState extends State<WorldClockTab> {
           style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
         ),
         Text(
-          DateFormat.yMMMMd('en_US').format(DateTime.now()),
+          DateFormat.yMMMMd().format(DateTime.now()),
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
         ),
       ]),
